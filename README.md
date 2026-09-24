@@ -1,18 +1,16 @@
-# 🌱 @itsliaaa/baileys
-
-[![Logo](https://files.catbox.moe/c5s9g0.jpg)](https://www.npmjs.com/package/@itsliaaa/baileys)
+# 🌱 @alindawou/baileys
 
 <p align="center">
    Enhanced Baileys v7 with fixes for newsletter media uploads, plus support for interactive messages, albums, and additional message types.
    <br><br>
-   <a href="https://www.npmjs.com/package/@itsliaaa/baileys">
-      <img src="https://img.shields.io/npm/v/@itsliaaa/baileys?style=for-the-badge&logo=npm"/>
+   <a href="https://www.npmjs.com/package/@alindawou/baileys">
+      <img src="https://img.shields.io/npm/v/@alindawou/baileys?style=for-the-badge&logo=npm"/>
    </a>
-   <a href="https://www.npmjs.com/package/@itsliaaa/baileys">
-      <img src="https://img.shields.io/npm/dm/@itsliaaa/baileys?style=for-the-badge&logo=npm"/>
+   <a href="https://www.npmjs.com/package/@alindawou/baileys">
+      <img src="https://img.shields.io/npm/dm/@alindawou/baileys?style=for-the-badge&logo=npm"/>
    </a>
-   <a href="https://github.com/itsliaaa/baileys">
-      <img src="https://img.shields.io/github/stars/itsliaaa/baileys?style=for-the-badge&logo=github"/>
+   <a href="https://github.com/alindawou/baileys">
+      <img src="https://img.shields.io/github/stars/alindawou/baileys?style=for-the-badge&logo=github"/>
    </a>
    <a href="LICENSE">
       <img src="https://img.shields.io/badge/license-MIT-blue?style=for-the-badge"/>
@@ -24,56 +22,6 @@
       <img src="https://img.shields.io/badge/ESM-only?logo=javascript&labelColor=yellow&logoColor=black&style=for-the-badge"/>
    </a>
 </p>
-
-☕ For donation: [Saweria](https://saweria.co/itsliaaa)
-
-### ✨ Highlights
-
-This fork designed for production use with a focus on clarity and safety:
-
-- 🚫 No obfuscation. Easy to read and audit.
-- 🚫 No auto-follow channel (newsletter) behavior.
-
-> [!IMPORTANT]
-> Hi everyone,
->
-> I want to clarify two separate attribution issues regarding packages derived from this fork.
->
-> 1. Direct redistribution of my modifications without attribution
->
-> The following packages are operated by the same individual under multiple npm accounts:
->
-> - [@nuisockets](https://www.npmjs.com/package/@nuisockets/baileys)
-> - [@nuiisatoru](https://www.npmjs.com/package/@nuiisatoru/baileys)
-> - [@nuiisweetberry](https://www.npmjs.com/package/@nuiisweetberry/baileys)
-> - [@nuiisweety](https://www.npmjs.com/package/@nuiisweety/baileys)
->
-> These packages redistribute files and modifications originating from this fork while removing contributor credits and modification notes.
->
-> 2. Rebranded republishes of this fork
->
-> - [@lumina-md](https://www.npmjs.com/package/@lumina-md/baileys)
-> - [@sairidev](https://www.npmjs.com/package/@sairidev/baileys-new)
-> - [@lordmega/baileys](https://www.npmjs.com/package/@lordmega/baileys)
-> - [phantom-baileys](https://www.npmjs.com/package/phantom-baileys)
-> - [nexora-baileys](https://www.npmjs.com/package/nexora-baileys)
->
-> These packages primarily repackage or republish this fork under different names while failing to preserve proper attribution, credits, or modification notes.
-> 
-> To be clear, I am **NOT** the original maintainer of Baileys. Full credit and respect belong to:
->
-> https://github.com/WhiskeySockets/Baileys
->
-> **Forking is completely acceptable. Removing attribution, contributor credits, or modification history is not.**
->
-> Please report if necessary.
->
-> Thank you. 🤍
-
-> [!NOTE]
-> 📄 This project is maintained with limited scope and is not intended to replace upstream Baileys.
->
-> 😞 And, really sorry for my bad english.
 
 ### 📋 Table of Contents
 - [📋 Table of Contents](#-table-of-contents)
@@ -96,15 +44,12 @@ This fork designed for production use with a focus on clarity and safety:
    - [➡️ Forward Message](#%EF%B8%8F-forward-message)
    - [👤 Contact](#-contact)
    - [📍 Location](#-location)
+   - [📡 Live Location](#-live-location)
    - [🗓️ Event](#%EF%B8%8F-event)
    - [👥 Group Invite](#-group-invite)
    - [🛍️ Product](#%EF%B8%8F-product)
    - [📊 Poll](#-poll)
    - [💭 Button Response](#-button-response)
-   - [✨ Rich Response](#-rich-response)
-   - [🧾 Message with Code Block](#-message-with-code-block)
-   - [🌏 Message with Inline Entities](#-message-with-inline-entities)
-   - [📋 Message with Table](#-message-with-table)
    - [🎞️ Status Mention](#%EF%B8%8F-status-mention)
 - [📁 Sending Media Messages](#-sending-media-messages)
    - [🖼️ Image](#%EF%B8%8F-image)
@@ -119,11 +64,7 @@ This fork designed for production use with a focus on clarity and safety:
    - [📋 List](#-list)
    - [🗄️ Interactive](#%EF%B8%8F-interactive)
    - [🫙 Hydrated Template](#-hydrated-template)
-- [💳 Sending Payment Messages](#-sending-payment-messages)
-   - [➕ Invite Payment](#-invite-payment)
-   - [🧾 Invoice](#-invoice)
-   - [🛍️ Order](#%EF%B8%8F-order)
-   - [💳 Request Payment](#-request-payment)
+   - [📝 Conversational Form](#-conversational-form)
 - [👁️ Other Message Options](#%EF%B8%8F-other-message-options)
    - [🤖 AI Icon](#-ai-icon)
    - [🕒 Ephemeral](#-ephemeral)
@@ -154,6 +95,14 @@ This fork designed for production use with a focus on clarity and safety:
 - [📦 Fork Base](#-fork-base)
 - [📣 Credits](#-credits)
 
+### ✨ Highlights
+
+This fork designed for production use with a focus on clarity and safety:
+
+- 🚫 No obfuscation. Easy to read and audit.
+- 🚫 No auto-follow channel (newsletter) behavior.
+
+
 ### 🛠️ Internal Adjustments
 - 🖼️ Fixed an issue where media could not be sent to newsletters due to an upstream issue.
 - 📁 Reintroduced [`makeInMemoryStore`](#%EF%B8%8F-implementing-data-store) with a minimal ESM adaptation and small adjustments for Baileys v7.
@@ -167,11 +116,6 @@ This fork designed for production use with a focus on clarity and safety:
    - 👉🏻 [Interactive Message](#-sending-interactive-messages) (buttons, lists, native flows, templates, carousels).
    - 🎞️ [Status Mention Message](#%EF%B8%8F-status-mention)
    - 📦 [Sticker Pack Message](#-sticker-pack)
-   - ✨ [Rich Response Message](#-rich-response) **[NEW]**
-   - 🧾 [Message with Code Blocks](#-message-with-code-block) **[NEW]**
-   - [🌏 Message with Inline Entities](#-message-with-inline-entities) **[NEW]**
-   - 📋 [Message with Table](#-message-with-table) **[NEW]**
-   - 💳 [Payment-related Message](#-sending-payment-messages) (payment requests, invites, orders, invoices).
 - 📰 Simplified sending messages with ad thumbnail using [`externalAdReply`](#-external-ad-reply), without requiring manual `contextInfo`.
 - 💭 Added support for quoting messages inside channel (newsletter). **[NEW]**
 - 🎀 Added support for [custom button icon](#%EF%B8%8F-interactive). **[NEW]**
@@ -191,12 +135,12 @@ This fork designed for production use with a focus on clarity and safety:
 ```json
 # NPM
 "dependencies": {
-   "@itsliaaa/baileys": "latest"
+   "@alindawou/baileys": "latest"
 }
 
 # GitHub
 "dependencies": {
-   "@itsliaaa/baileys": "github:itsliaaa/baileys"
+   "@alindawou/baileys": "github:alindawou/baileys"
 }
 ```
 
@@ -204,26 +148,26 @@ This fork designed for production use with a focus on clarity and safety:
 
 ```bash
 # NPM
-npm i @itsliaaa/baileys@latest
+npm i @alindawou/baileys@latest
 
 # GitHub
-npm i github:itsliaaa/baileys
+npm i github:alindawou/baileys
 ```
 
 #### 🧩 Import (ESM & CJS)
 
 ```javascript
 // --- ESM
-import { makeWASocket } from '@itsliaaa/baileys'
+import { makeWASocket } from '@alindawou/baileys'
 
 // --- CJS (tested and working on Node.js 24 ✅)
-const { makeWASocket } = require('@itsliaaa/baileys')
+const { makeWASocket } = require('@alindawou/baileys')
 ```
 
 ### 🌐 Connect to WhatsApp (Quick Step)
 
 ```javascript
-import { makeWASocket, delay, DisconnectReason, useMultiFileAuthState } from '@itsliaaa/baileys'
+import { makeWASocket, delay, DisconnectReason, useMultiFileAuthState } from '@alindawou/baileys'
 import { Boom } from '@hapi/boom'
 import pino from 'pino'
 
@@ -287,7 +231,7 @@ connectToWhatsApp()
 > I highly recommend building your own data store, as keeping an entire chat history in memory can lead to excessive RAM usage.
 
 ```javascript
-import { makeWASocket, makeInMemoryStore, delay, DisconnectReason, useMultiFileAuthState } from '@itsliaaa/baileys'
+import { makeWASocket, makeInMemoryStore, delay, DisconnectReason, useMultiFileAuthState } from '@alindawou/baileys'
 import { Boom } from '@hapi/boom'
 import pino from 'pino'
 
@@ -380,13 +324,13 @@ sock.sendMessage(jid, {
 })
 
 // --- Send a text message with a link preview
-const urlA = 'https://www.npmjs.com/package/@itsliaaa/baileys'
+const urlA = 'https://www.npmjs.com/package/@alindawou/baileys'
 
 sock.sendMessage(jid, {
    text: urlA + ' 👆🏻 Check it out!',
    linkPreview: {
       'matched-text': urlA,
-      title: '🌱 @itsliaaa/baileys',
+      title: '🌱 @alindawou/baileys',
       description: 'Underrated Baileys Fork',
       previewType: 0, // --- Use 1 for video playback in the link preview
       jpegThumbnail: fs.readFileSync('./path/to/image.jpg')
@@ -394,9 +338,9 @@ sock.sendMessage(jid, {
 })
 
 // --- Send a text message with a large link preview and favicon
-import { prepareWAMessageMedia } from '@itsliaaa/baileys'
+import { prepareWAMessageMedia } from '@alindawou/baileys'
 
-const urlB = 'https://www.npmjs.com/package/@itsliaaa/baileys#readme'
+const urlB = 'https://www.npmjs.com/package/@alindawou/baileys#readme'
 
 const { imageMessage: image } = await prepareWAMessageMedia({
    image: {
@@ -415,7 +359,7 @@ sock.sendMessage(jid, {
    text: urlB + ' 👆🏻 Check it out!',
    linkPreview: {
       'matched-text': urlB,
-      title: '🌱 @itsliaaa/baileys',
+      title: '🌱 @alindawou/baileys',
       description: 'Underrated Baileys Fork',
       previewType: 0,
       jpegThumbnail: fs.readFileSync('./path/to/image.jpg'),
@@ -498,14 +442,14 @@ sock.sendMessage(jid, {
 ```javascript
 const vcard = 'BEGIN:VCARD\n'
             + 'VERSION:3.0\n'
-            + 'FN:Lia Wynn\n'
+            + 'FN:Your Name\n'
             + 'ORG:Waitress;\n'
             + 'TEL;type=CELL;type=VOICE;waid=628123456789:+62 8123 4567 89\n'
             + 'END:VCARD'
 
 sock.sendMessage(jid, {
    contacts: {
-      displayName: 'Lia Wynn',
+      displayName: 'Your Name',
       contacts: [
          { vcard }
       ]
@@ -523,6 +467,21 @@ sock.sendMessage(jid, {
       degreesLatitude: 24.121231,
       degreesLongitude: 55.1121221,
       name: '👋🏻 I am here'
+   }
+}, {
+   quoted: message
+})
+```
+
+#### 📡 Live Location
+
+```javascript
+sock.sendMessage(jid, {
+   liveLocation: {
+      degreesLatitude: 24.121231,
+      degreesLongitude: 55.1121221,
+      accuracyInMeters: 10,
+      caption: '📡 Live location'
    }
 }, {
    quoted: message
@@ -561,7 +520,7 @@ const inviteCode = groupUrl
    ?.split('?')[0]
 
 const groupJid = '1201111111111@g.us'
-const groupName = '@itsliaaa/baileys'
+const groupName = '@alindawou/baileys'
 
 sock.sendMessage(jid, {
    groupInvite: {
@@ -586,17 +545,17 @@ sock.sendMessage(jid, {
       url: './path/to/image.jpg'
    },
    body: '👋🏻 Check my product here!',
-   footer: '@itsliaaa/baileys',
+   footer: '@alindawou/baileys',
    product: {
-      currencyCode: 'IDR',
+      currencyCode: 'XOF',
       description: '🛍️ Interesting product!',
       priceAmount1000: 70_000_000,
       productId: randomUUID(),
       productImageCount: 1,
       salePriceAmount1000: 65_000_000,
-      signedUrl: 'https://www.npmjs.com/package/@itsliaaa/baileys',
+      signedUrl: 'https://www.npmjs.com/package/@alindawou/baileys',
       title: '📦 Starseed (Premium)',
-      url: 'https://www.npmjs.com/package/@itsliaaa/baileys'
+      url: 'https://www.npmjs.com/package/@alindawou/baileys'
    },
    businessOwnerJid: '0@s.whatsapp.net'
 })
@@ -714,130 +673,6 @@ sock.sendMessage(jid, {
    }
 }, {
    quoted: message
-})
-```
-
-#### ✨ Rich Response
-
-> [!NOTE]
-> `richResponse[]` is a representation of [`submessages[]`](https://baileys.wiki/docs/api/namespaces/proto/interfaces/IAIRichResponseSubMessage) inside `richResponseMessage`.
-
-> [!TIP]
-> You can still use the original [`submessages[]`](https://baileys.wiki/docs/api/namespaces/proto/interfaces/IAIRichResponseSubMessage) field directly.
-> The code example below is just an implementation using a helper, not a required structure.
-
-```javascript
-sock.sendMessage(jid, {
-   disclaimerText: 'RAW submessages structure example',
-   richResponse: [{
-      text: 'Example Usage',
-   }, {
-      language: 'javascript',
-      code: [{
-         highlightType: 0,
-         codeContent: 'console.log("Hello, World!")'
-      }]
-   }, {
-      text: 'Pretty simple, right?\n'
-   }, {
-      text: 'Comparison between Node.js, Bun, and Deno',
-   }, {
-      title: 'Runtime Comparison',
-      table: [{
-         isHeading: true,
-         items: ['', 'Node.js', 'Bun', 'Deno']
-      }, {
-         isHeading: false,
-         items: ['Engine', 'V8 (C++)', 'JavaScriptCore (C++)', 'V8 (C++)']
-      }, {
-         isHeading: false,
-         items: ['Performance', '4/5', '5/5', '4/5']
-      }]
-   }, {
-      text: 'Does this help clarify the differences?'
-   }]
-})
-```
-
-> [!TIP]
-> You can easily add syntax highlighting by importing `tokenizeCode` directly from Baileys.
-
-```javascript
-import { tokenizeCode } from '@itsliaaa/baileys'
-
-const language = 'javascript'
-const code = 'console.log("Hello, World!")'
-
-sock.sendMessage(jid, {
-   disclaimerText: 'Example of tokenizing Code Block',
-   richResponse: [{
-      text: 'Example Usage',
-   }, {
-      language,
-      code: tokenizeCode(code, language)
-   }, {
-      text: 'Pretty simple, right?'
-   }]
-})
-```
-
-> 💡 Supported Languages: `css`, `html`, `javascript`, `typescript`, `python`, `golang`, `rust`, `c`, `c#`, `c++`, `bash`, `bat`, `powershell`.
-
-#### 🧾 Message with Code Block
-
-> [!NOTE]
-> This feature already includes a built-in tokenizer with `tokenizeCode`.
-
-```javascript
-sock.sendMessage(jid, {
-   disclaimerText: 'Code Block',
-   headerText: '## Example Usage',
-   contentText: '---',
-   code: 'console.log("Hello, World!")',
-   language: 'javascript',
-   footerText: 'Pretty simple, right?'
-})
-```
-
-#### 🌏 Message with Inline Entities
-
-```javascript
-sock.sendMessage(jid, {
-   disclaimerText: 'Inline Entities',
-   headerText: '## Check Out!',
-   contentText: '---',
-   links: [{
-      text: '1. Google',
-      title: 'Popular Search Engine',
-      url: 'https://www.google.com/'
-   }, {
-      text: '2. YouTube',
-      title: 'Popular Streaming Platform',
-      url: 'https://www.youtube.com/'
-   }, {
-      text: '3. Modded Baileys',
-      title: 'Underrated Baileys Fork',
-      url: 'https://www.npmjs.com/package/@itsliaaa/baileys'
-   }],
-   footerText: '---'
-})
-```
-
-#### 📋 Message with Table
-
-```javascript
-sock.sendMessage(jid, {
-   disclaimerText: 'Table',
-   headerText: '## Comparison between Node.js, Bun, and Deno',
-   contentText: '---',
-   title: 'Runtime Comparison',
-   table: [
-      ['', 'Node.js', 'Bun', 'Deno'],
-      ['Engine', 'V8 (C++)', 'JavaScriptCore (C++)', 'V8 (C++)'],
-      ['Performance', '4/5', '5/5', '4/5']
-   ],
-   noHeading: false, // --- Optional
-   footerText: 'Does this help clarify the differences?'
 })
 ```
 
@@ -975,8 +810,8 @@ sock.sendMessage(jid, {
       }
    }],
    name: '📦 My Sticker Pack',
-   publisher: '🌟 Lia Wynn',
-   description: '@itsliaaa/baileys'
+   publisher: '🌟 Your Name',
+   description: '@alindawou/baileys'
 }, {
    quoted: message
 })
@@ -990,7 +825,7 @@ sock.sendMessage(jid, {
 // --- Regular buttons message
 sock.sendMessage(jid, {
    text: '👆🏻 Buttons!',
-   footer: '@itsliaaa/baileys',
+   footer: '@alindawou/baileys',
    buttons: [{
       text: '👋🏻 SignUp',
       id: '#SignUp'
@@ -1005,7 +840,7 @@ sock.sendMessage(jid, {
       url: './path/to/image.jpg'
    },
    caption: '👆🏻 Buttons and Native Flow!',
-   footer: '@itsliaaa/baileys',
+   footer: '@alindawou/baileys',
    buttons: [{
       text: '👋🏻 Rating',
       id: '#Rating'
@@ -1043,7 +878,7 @@ sock.sendMessage(jid, {
 ```javascript
 sock.sendMessage(jid, {
    text: '📋 List!',
-   footer: '@itsliaaa/baileys',
+   footer: '@alindawou/baileys',
    buttonText: '📋 Select',
    title: '👋🏻 Hello',
    sections: [{
@@ -1075,12 +910,12 @@ sock.sendMessage(jid, {
       url: './path/to/image.jpg'
    },
    caption: '🗄️️ Interactive!',
-   footer: '@itsliaaa/baileys',
+   footer: '@alindawou/baileys',
    optionText: '👉🏻 Select Options', // --- Optional, wrap all native flow into a single list
    optionTitle: '📄 Select Options', // --- Optional
    offerText: '🏷️ Newest Coupon!', // --- Optional, add an offer into message
-   offerCode: '@itsliaaa/baileys', // --- Optional
-   offerUrl: 'https://www.npmjs.com/package/@itsliaaa/baileys', // --- Optional
+   offerCode: '@alindawou/baileys', // --- Optional
+   offerUrl: 'https://www.npmjs.com/package/@alindawou/baileys', // --- Optional
    offerExpiration: Date.now() + 3_600_000, // --- Optional
    nativeFlow: [{
       text: '👋🏻 Greeting',
@@ -1091,10 +926,10 @@ sock.sendMessage(jid, {
       call: '628123456789'
    }, {
       text: '📋 Copy',
-      copy: '@itsliaaa/baileys'
+      copy: '@alindawou/baileys'
    }, {
       text: '🌐 Source',
-      url: 'https://www.npmjs.com/package/@itsliaaa/baileys',
+      url: 'https://www.npmjs.com/package/@alindawou/baileys',
       useWebview: true // --- Optional
    }, {
       text: '📋 Select',
@@ -1126,7 +961,7 @@ sock.sendMessage(jid, {
 // --- Carousel & Native Flow
 sock.sendMessage(jid, {
    text: '🗂️ Interactive with Carousel!',
-   footer: '@itsliaaa/baileys',
+   footer: '@alindawou/baileys',
    cards: [{
       image: {
          url: './path/to/image.jpg'
@@ -1135,7 +970,7 @@ sock.sendMessage(jid, {
       footer: '🏷️️ Pinterest',
       nativeFlow: [{
          text: '🌐 Source',
-         url: 'https://www.npmjs.com/package/@itsliaaa/baileys',
+         url: 'https://www.npmjs.com/package/@alindawou/baileys',
          useWebview: true
       }]
    }, {
@@ -1145,12 +980,12 @@ sock.sendMessage(jid, {
       caption: '🖼️ Image 2',
       footer: '🏷️ Pinterest',
       offerText: '🏷️ New Coupon!',
-      offerCode: '@itsliaaa/baileys',
-      offerUrl: 'https://www.npmjs.com/package/@itsliaaa/baileys',
+      offerCode: '@alindawou/baileys',
+      offerUrl: 'https://www.npmjs.com/package/@alindawou/baileys',
       offerExpiration: Date.now() + 3_600_000,
       nativeFlow: [{
          text: '🌐 Source',
-         url: 'https://www.npmjs.com/package/@itsliaaa/baileys'
+         url: 'https://www.npmjs.com/package/@alindawou/baileys'
       }]
    }, {
       image: {
@@ -1161,8 +996,8 @@ sock.sendMessage(jid, {
       optionText: '👉🏻 Select Options',
       optionTitle: '👉🏻 Select Options',
       offerText: '🏷️ New Coupon!',
-      offerCode: '@itsliaaa/baileys',
-      offerUrl: 'https://www.npmjs.com/package/@itsliaaa/baileys',
+      offerCode: '@alindawou/baileys',
+      offerUrl: 'https://www.npmjs.com/package/@alindawou/baileys',
       offerExpiration: Date.now() + 3_600_000,
       nativeFlow: [{
          text: '🛒 Product',
@@ -1170,7 +1005,7 @@ sock.sendMessage(jid, {
          icon: 'default'
       }, {
          text: '🌐 Source',
-         url: 'https://www.npmjs.com/package/@itsliaaa/baileys'
+         url: 'https://www.npmjs.com/package/@alindawou/baileys'
       }]
    }]
 }, {
@@ -1206,13 +1041,13 @@ sock.sendMessage(jid, {
       url: './path/to/image.jpg'
    },
    caption: '🫙 Template!',
-   footer: '@itsliaaa/baileys',
+   footer: '@alindawou/baileys',
    templateButtons: [{
       text: '👉?? Tap Here',
       id: '#Order'
    }, {
       text: '🌐 Source',
-      url: 'https://www.npmjs.com/package/@itsliaaa/baileys'
+      url: 'https://www.npmjs.com/package/@alindawou/baileys'
    }, {
       text: '📞 Call',
       call: '628123456789'
@@ -1222,49 +1057,61 @@ sock.sendMessage(jid, {
 })
 ```
 
-### 💳 Sending Payment Messages
+#### 📝 Conversational Form
 
-#### ➕ Invite Payment
+Ask a contact a series of questions in a private chat, one at a time. Every answer is validated, and the promise resolves with all the answers once the form ends. It only sends regular messages (text, buttons, lists), so it works on Android, iOS and WhatsApp Web. The default messages are in French and can be overridden with `texts`.
 
 ```javascript
-sock.sendMessage(jid, {
-   paymentInviteServiceType: 3 // 1, 2, or 3
+const form = sock.createForm({
+   title: '🧁 Commande pâtisserie',
+   timeoutMs: 10 * 60_000, // --- Optional, 0 disables it (default 10 min)
+   confirm: true, // --- Optional, summary with Confirm / Restart / Cancel buttons (default true)
+   fields: [
+      { key: 'nom', label: 'Nom', question: 'Quel est votre nom ?', min: 3 },
+      { key: 'produit', label: 'Produit', type: 'choice', question: 'Quel produit ?',
+        options: [{ id: 'gateau', text: '🎂 Gâteau' }, { id: 'tarte', text: '🥧 Tarte' }] }, // --- ≤ 3 options: buttons, more: a list
+      { key: 'quantite', label: 'Quantité', type: 'number', question: 'Combien ?', min: 1, max: 20, integer: true },
+      { key: 'livraison', label: 'Livraison', type: 'yesno', question: 'Voulez-vous être livré ?' },
+      { key: 'adresse', label: 'Adresse', type: 'location', question: 'Envoyez votre localisation 📍',
+        when: answers => answers.livraison === true }, // --- Only asked when the condition is true
+      { key: 'telephone', label: 'Téléphone', type: 'phone', question: 'Votre numéro ?', defaultCountryCode: '229' },
+      { key: 'note', label: 'Remarque', question: 'Une remarque ?', optional: true } // --- Contact can type "passer"
+   ]
+})
+
+const result = await form.ask(jid, { intro: '👋 Bonjour ! Quelques questions pour votre commande.' })
+
+if (result.status === 'completed') {
+   console.log(result.answers) // { nom: 'Boda', produit: 'gateau', quantite: 4, livraison: true, adresse: { latitude, longitude }, ... }
+   console.log(result.labels)  // { produit: '🎂 Gâteau', livraison: '✅ Oui' }
+}
+// --- Other statuses: 'cancelled' | 'timeout' | 'replaced' (a new form was started) | 'closed' (connection closed)
+
+// --- Answers are consumed by the form: skip them in your own handlers
+sock.ev.on('messages.upsert', ({ messages }) => {
+   for (const message of messages) {
+      if (sock.isFormReply(message)) continue
+      // ...
+   }
 })
 ```
 
-#### 🧾 Invoice
+| Type | Contact sends | Value |
+|---|---|---|
+| `text` (default) | text (`min`, `max`, `pattern`) | `string` |
+| `number` | number (`min`, `max`, `integer`) | `number` |
+| `phone` | phone number (`defaultCountryCode`) | digits, e.g. `'2290197000000'` |
+| `email` | email | `string` (lowercase) |
+| `date` | `JJ/MM/AAAA` or `AAAA-MM-JJ` (`future`, `past`) | `Date` |
+| `choice` | button, list row, option text or its number | option `id` |
+| `yesno` | Yes / No button, or "oui" / "non" | `boolean` |
+| `location` | location, or typed address (`allowText`) | `{ latitude, longitude }` or `{ address }` |
+| `image` `video` `audio` `document` `media` | file (`mimetypes`) | `{ type, mimetype, caption, fileName, message }` — download it with `downloadMediaMessage(value.message, 'buffer')` |
+
+Every field also accepts `optional`, `when(answers)`, `validate(value, answers)` (return `true`, or an error message to send back), `error` and `label`. The contact can type **annuler** (cancel), **retour** (previous question) or **passer** (skip an optional field). You can change these words with `keywords` and the messages with `texts`. Also available: `form.cancel(jid, notify)`, `form.isActive(jid)`, `sock.cancelForm(jid)` and `sock.getActiveForms()`.
 
 > [!NOTE]
-> Invoice message are not supported yet.
-
-```javascript
-sock.sendMessage(jid, {
-   image: {
-      url: './path/to/image.jpg'
-   },
-   invoiceNote: '🏷️ Invoice'
-})
-```
-
-#### 🛍️ Order
-
-```javascript
-sock.sendMessage(chat, {
-   orderText: '🛍️ Order',
-   thumbnail: fs.readFileSync('./path/to/image.jpg') // --- Must in buffer format
-}, {
-   quoted: message
-})
-```
-
-#### 💳 Request Payment
-
-```javascript
-sock.sendMessage(jid, {
-   text: '💳 Request Payment',
-   requestPaymentFrom: '0@s.whatsapp.net'
-})
-```
+> Replies often come from the contact's LID (`xxx@lid`) rather than their phone number. The form resolves both, so pass whichever JID you have. Sessions live in memory and are lost when the process restarts.
 
 ### 👁️ Other Message Options
 
@@ -1313,7 +1160,7 @@ sock.sendMessage(jid, {
       body: '❓ I dont know',
       thumbnail: fs.readFileSync('./path/to/image.jpg'), // --- Must in buffer format
       largeThumbnail: false, // --- Or true for bigger thumbnail
-      url: 'https://www.npmjs.com/package/@itsliaaa/baileys' // --- Optional, used for WhatsApp internal thumbnail caching and direct URL
+      url: 'https://www.npmjs.com/package/@alindawou/baileys' // --- Optional, used for WhatsApp internal thumbnail caching and direct URL
    }
 }, {
    quoted: message
@@ -1357,7 +1204,7 @@ sock.sendMessage(jid, {
       text: '📃 Built manually from scratch using the raw WhatsApp proto structure',
       contextInfo: {
          externalAdReply: {
-            title: '@itsliaaa/baileys',
+            title: '@alindawou/baileys',
             thumbnail: fs.readFileSync('./path/to/image.jpg'),
             sourceApp: 'whatsapp',
             showAdAttribution: true,
@@ -1521,7 +1368,7 @@ console.log('🔗 Pairing code', ':', customPairingCode)
 > Automatically use available image processing library: `sharp`, `@napi-rs/image`, or `jimp`
 
 ```javascript
-import { getImageProcessingLibrary } from '@itsliaaa/baileys'
+import { getImageProcessingLibrary } from '@alindawou/baileys'
 import { readFile } from 'fs/promises'
 
 const lib = await getImageProcessingLibrary()
@@ -1575,7 +1422,7 @@ console.dir(output, { depth: null })
 
 ```javascript
 // --- Create a new one
-sock.newsletterCreate('@itsliaaa/baileys', '📣 Fresh updates weekly')
+sock.newsletterCreate('@alindawou/baileys', '📣 Fresh updates weekly')
 
 // --- Get info
 const metadata = sock.newsletterMetadata('1231111111111@newsletter')
@@ -1600,10 +1447,10 @@ sock.newsletterDemote('1231111111111@newsletter', '6281111111111@s.whatsapp.net'
 sock.newsletterChangeOwner('1231111111111@newsletter', '6281111111111@s.whatsapp.net')
 
 // --- Update newsletter
-sock.newsletterUpdate('1231111111111@newsletter', { name: '@itsliaaa/baileys' })
+sock.newsletterUpdate('1231111111111@newsletter', { name: '@alindawou/baileys' })
 
 // --- Change name
-sock.newsletterUpdateName('1231111111111@newsletter', '📦 @itsliaaa/baileys')
+sock.newsletterUpdateName('1231111111111@newsletter', '📦 @alindawou/baileys')
 
 // --- Change description
 sock.newsletterUpdateDescription('1231111111111@newsletter', '📣 Fresh updates weekly')
@@ -1638,7 +1485,7 @@ sock.newsletterDelete('1231111111111@newsletter')
 
 ```javascript
 // --- Create a new one and add participants using their JIDs
-const group = sock.groupCreate('@itsliaaa/baileys', ['628123456789@s.whatsapp.net'])
+const group = sock.groupCreate('@alindawou/baileys', ['628123456789@s.whatsapp.net'])
 console.dir(group, { depth: null })
 
 // --- Get info
@@ -1675,7 +1522,7 @@ sock.groupParticipantsUpdate(jid, ['628123456789@s.whatsapp.net'], 'demote')
 sock.groupRequestParticipantsUpdate(jid, ['628123456789@s.whatsapp.net'], 'approve')
 
 // --- Change name
-sock.groupUpdateSubject(jid, '📦 @itsliaaa/baileys')
+sock.groupUpdateSubject(jid, '📦 @alindawou/baileys')
 
 // --- Change description
 sock.groupUpdateDescription(jid, 'Updated description')
@@ -1729,14 +1576,14 @@ const group = await sock.groupGetInviteInfo('ABC123456789')
 console.log('👥 Got group info from invite code', ':', group)
 
 // --- Update bot member label
-sock.updateMemberLabel(jid, '@itsliaaa/baileys')
+sock.updateMemberLabel(jid, '@alindawou/baileys')
 ```
 
 #### 👥 Community Management
 
 ```javascript
 // --- Create a new one and add description
-const community = await sock.communityCreate('@itsliaaa/baileys', '📣 Fresh updates weekly')
+const community = await sock.communityCreate('@alindawou/baileys', '📣 Fresh updates weekly')
 console.dir(community, { depth: null })
 
 // --- Create a subgroup for community and add participants using their JIDs
@@ -1769,7 +1616,7 @@ sock.communityLeave(jid)
 sock.communityRequestParticipantsUpdate(jid, ['628123456789@s.whatsapp.net'], 'approve')
 
 // --- Change name
-sock.communityUpdateSubject(jid, '📦 @itsliaaa/baileys')
+sock.communityUpdateSubject(jid, '📦 @alindawou/baileys')
 
 // --- Change description
 sock.communityUpdateDescription(jid, 'Updated description')
@@ -1892,7 +1739,7 @@ const product = await sock.productCreate({
    name: '🧩 Starseed (Premium)',
    description: 'Get a full version of Starseed!',
    price: 100000,
-   currency: 'IDR',
+   currency: 'XOF',
    originCountryCode: 'ID',
    images: [
       bufferImage,
@@ -1908,7 +1755,7 @@ await sock.productUpdate(productId, {
    name: '🧩 Starseed (Premium)',
    description: 'Get a full version of Starseed with more features!',
    price: 75000,
-   currency: 'IDR',
+   currency: 'XOF',
    images: [
       {
          url: './path/to/image.jpg'
@@ -1937,7 +1784,7 @@ console.dir(order, { depth: null })
 await sock.updateBusinessProfile({
    address: 'Jakarta, Indonesia',
    description: '🛒 Official Starseed Store',
-   websites: ['https://www.npmjs.com/package/@itsliaaa/baileys'],
+   websites: ['https://www.npmjs.com/package/@alindawou/baileys'],
    email: 'more-more@gmail.com',
    hours: {
       timezone: 'Asia/Jakarta',
@@ -2043,35 +1890,15 @@ sock.ev.on('newsletter-settings.update', (update) => {})
 sock.ev.on('settings.update', (update) => {})
 ```
 
-### 🚀 Try the Bot
-
-A fast, lightweight, and modular WhatsApp bot built with [@itsliaaa/baileys](https://www.npmjs.com/package/@itsliaaa/baileys).
-Perfect for managing groups, moderating chats, and adding fun with quiz games and handy tools.
-
-👉🏻 [@itsliaaa/starseed](https://github.com/itsliaaa/starseed#readme)
-
-A lightweight yet powerful Baileys wrapper designed to simplify development while extending support for additional message types and WhatsApp features.
-
-👉🏻 [@itsliaaa/starcore](https://www.npmjs.com/package/@itsliaaa/starcore)
-
 ### 📦 Fork Base
 
 This fork is based on [Baileys (GitHub)](https://github.com/WhiskeySockets/Baileys)
 
 ### 📣 Credits
 
-This fork uses Protocol Buffer definitions maintained by [WPP Connect](https://github.com/wppconnect-team) via [`wa-proto`](https://github.com/wppconnect-team/wa-proto)
-
 Full credit is attributed to the original maintainers and contributors of Baileys:
 - [purpshell](https://github.com/purpshell)
 - [jlucaso1](https://github.com/jlucaso1)
 - [adiwajshing](https://github.com/adiwajshing)
 
-<!-- Please do not replace my name with yours. It's disrespectful. -->
-
-This fork includes additional enhancements and modifications by [Lia Wynn](https://github.com/itsliaaa)
-
-Special thanks to [itsreimau](https://github.com/itsreimau) for the fix to the `updateBlockStatus` implementation.
-
-> [!CAUTION]
-> ⚠️ **Modification, removal, or misrepresentation of these credits is strictly prohibited. Any redistribution or fork must preserve this section in its original form without exception.**
+Enhanced and maintained by [alindawou](https://github.com/alindawou)
