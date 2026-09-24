@@ -1,0 +1,23 @@
+# Files that should not be published to npm
+
+# Sessions and credentials
+session/
+sessions/
+auth_info*/
+*.session
+
+# Dev files
+app.js
+ANTI-BAN.md
+scripts/
+.gitignore
+.env
+.env.example
+.claude/
+.vscode/
+
+# Dependencies
+node_modules/
+
+# Logs
+*.log

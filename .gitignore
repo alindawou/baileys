@@ -1,0 +1,28 @@
+# Environment variables — never commit
+.env
+
+# WhatsApp sessions — private keys, never commit
+session/
+sessions/
+auth_info*/
+*.session
+
+# Dependencies
+node_modules/
+
+# Logs
+*.log
+pino-*
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Editors
+.claude/
+.vscode/
+.idea/
+
+# Lock files (not needed for a published package)
+package-lock.json
+yarn.lock
