@@ -1,5 +1,6 @@
+import type { ConversationForms } from "../Utils/conversation-form.js";
 export default makeWASocket;
-declare function makeWASocket(config: any): {
+declare function makeWASocket(config: any): ConversationForms & {
     communityQuery: (jid: any, type: any, content: any) => Promise<any>;
     communityMetadata: (jid: any) => Promise<{
         id: any;
