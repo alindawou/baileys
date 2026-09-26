@@ -49,11 +49,11 @@ test('parseFormFieldReply: built-in validations', () => {
    assert.equal(p({ type: 'date' }, '25/12/2030').value.getMonth(), 11)
    assert.ok(p({ type: 'date' }, '31/02/2030').error)
    assert.ok(p({ type: 'date', future: true }, '01/01/2000').error)
-   const choice = { type: 'choice', options: [{ id: 'g', text: '🎂 Cake' }, 'Pie'] }
+   const choice = { type: 'choice', options: [{ id: 'g', text: 'Cake' }, 'Pie'] }
    assert.equal(p(choice, 'g', 'g').value, 'g')
    assert.equal(p(choice, '2').value, 'Pie')
    assert.equal(p(choice, 'pie').value, 'Pie')
-   assert.equal(p(choice, '🎂 cake').label, '🎂 Cake')
+   assert.equal(p(choice, 'cake').label, 'Cake')
    assert.ok(p(choice, 'pizza').error)
    assert.equal(p({ type: 'yesno' }, 'yes').value, true)
    assert.equal(p({ type: 'yesno' }, 'no', 'no').value, false)
@@ -76,7 +76,7 @@ test('full form: errors, back, list, location, confirmation (replies from LID)',
       title: 'Order', typing: false,
       fields: [
          { key: 'name', label: 'Name', question: 'Your name?', min: 3 },
-         { key: 'product', label: 'Product', type: 'choice', question: 'Product?', options: [{ id: 'cake', text: '🎂 Cake' }, { id: 'pie', text: '🥧 Pie' }] },
+         { key: 'product', label: 'Product', type: 'choice', question: 'Product?', options: [{ id: 'cake', text: 'Cake' }, { id: 'pie', text: 'Pie' }] },
          { key: 'size', label: 'Size', type: 'choice', question: 'Size?', options: ['S', 'M', 'L', 'XL'] },
          { key: 'quantity', label: 'Quantity', type: 'number', question: 'How many?', min: 1, max: 20, integer: true },
          { key: 'address', label: 'Address', type: 'location', question: 'Address?' }
@@ -106,7 +106,7 @@ test('full form: errors, back, list, location, confirmation (replies from LID)',
    await sock.reply({ locationMessage: { degreesLatitude: 6.4091765, degreesLongitude: 2.3352802 } })
    const summary = sock.last()
    assert.match(summary.text, /Summary/)
-   assert.match(summary.text, /Product: 🥧 Pie/)
+   assert.match(summary.text, /Product: Pie/)
    assert.match(summary.text, /Quantity: 4/)
    assert.deepEqual(summary.buttons.map(b => b.buttonId), ['confirm', 'restart', 'cancel'])
    await sock.text('whatever')
@@ -117,7 +117,7 @@ test('full form: errors, back, list, location, confirmation (replies from LID)',
    assert.equal(r.status, 'completed')
    assert.deepEqual({ ...r.answers, address: undefined }, { name: 'Boda', product: 'pie', size: 'M', quantity: 4, address: undefined })
    assert.equal(r.answers.address.latitude, 6.4091765)
-   assert.equal(r.labels.product, '🥧 Pie')
+   assert.equal(r.labels.product, 'Pie')
    assert.equal(sock.last().text, T.completed)
    assert.equal(form.isActive(PN), false)
 })
@@ -161,7 +161,7 @@ test('custom validate, other contacts ignored, replies from PN', async () => {
    const sock = fakeSock()
    const form = sock.createForm({
       typing: false, confirm: false,
-      fields: [{ key: 'code', question: 'Promo code?', validate: v => v === 'AFRIK' || '⚠️ Unknown code.' }]
+      fields: [{ key: 'code', question: 'Promo code?', validate: v => v === 'AFRIK' || 'Unknown code.' }]
    })
    const done = form.ask(PN)
    await tick()
@@ -169,7 +169,7 @@ test('custom validate, other contacts ignored, replies from PN', async () => {
    assert.equal(sock.isFormReply(other), false)
    assert.equal(form.isActive(PN), true)
    await sock.reply({ conversation: 'test' }, PN)
-   assert.equal(sock.last().text, '⚠️ Unknown code.')
+   assert.equal(sock.last().text, 'Unknown code.')
    await sock.reply({ conversation: 'AFRIK' }, PN)
    assert.equal((await done).answers.code, 'AFRIK')
 })
