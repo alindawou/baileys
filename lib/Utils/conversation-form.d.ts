@@ -14,7 +14,7 @@ export interface FormField {
     type?: FormFieldType;
     /** label shown in the summary (default: key) */
     label?: string;
-    /** the contact can type "passer" to leave it empty (value = null) */
+    /** the contact can type "skip" to leave it empty (value = null) */
     optional?: boolean;
     /** only ask this field when it returns true */
     when?: (answers: FormAnswers) => boolean;
@@ -85,7 +85,7 @@ export interface FormDefinition {
     timeoutMs?: number;
     /** show "typing…" before each question (default true) */
     typing?: boolean;
-    /** override any message (French by default) */
+    /** override any message sent to the contact */
     texts?: Partial<FormTexts>;
     /** words the contact can type */
     keywords?: {

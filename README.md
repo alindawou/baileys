@@ -1059,31 +1059,31 @@ sock.sendMessage(jid, {
 
 #### 📝 Conversational Form
 
-Ask a contact a series of questions in a private chat, one at a time. Every answer is validated, and the promise resolves with all the answers once the form ends. It only sends regular messages (text, buttons, lists), so it works on Android, iOS and WhatsApp Web. The default messages are in French and can be overridden with `texts`.
+Ask a contact a series of questions in a private chat, one at a time. Every answer is validated, and the promise resolves with all the answers once the form ends. It only sends regular messages (text, buttons, lists), so it works on Android, iOS and WhatsApp Web.
 
 ```javascript
 const form = sock.createForm({
-   title: '🧁 Commande pâtisserie',
+   title: '🧁 Pastry order',
    timeoutMs: 10 * 60_000, // --- Optional, 0 disables it (default 10 min)
-   confirm: true, // --- Optional, summary with Confirm / Restart / Cancel buttons (default true)
+   confirm: true, // --- Optional, summary with Confirm / Start over / Cancel buttons (default true)
    fields: [
-      { key: 'nom', label: 'Nom', question: 'Quel est votre nom ?', min: 3 },
-      { key: 'produit', label: 'Produit', type: 'choice', question: 'Quel produit ?',
-        options: [{ id: 'gateau', text: '🎂 Gâteau' }, { id: 'tarte', text: '🥧 Tarte' }] }, // --- ≤ 3 options: buttons, more: a list
-      { key: 'quantite', label: 'Quantité', type: 'number', question: 'Combien ?', min: 1, max: 20, integer: true },
-      { key: 'livraison', label: 'Livraison', type: 'yesno', question: 'Voulez-vous être livré ?' },
-      { key: 'adresse', label: 'Adresse', type: 'location', question: 'Envoyez votre localisation 📍',
-        when: answers => answers.livraison === true }, // --- Only asked when the condition is true
-      { key: 'telephone', label: 'Téléphone', type: 'phone', question: 'Votre numéro ?', defaultCountryCode: '229' },
-      { key: 'note', label: 'Remarque', question: 'Une remarque ?', optional: true } // --- Contact can type "passer"
+      { key: 'name', label: 'Name', question: 'What is your name?', min: 3 },
+      { key: 'product', label: 'Product', type: 'choice', question: 'Which product?',
+        options: [{ id: 'cake', text: '🎂 Cake' }, { id: 'pie', text: '🥧 Pie' }] }, // --- ≤ 3 options: buttons, more: a list
+      { key: 'quantity', label: 'Quantity', type: 'number', question: 'How many?', min: 1, max: 20, integer: true },
+      { key: 'delivery', label: 'Delivery', type: 'yesno', question: 'Do you want it delivered?' },
+      { key: 'address', label: 'Address', type: 'location', question: 'Send your location 📍',
+        when: answers => answers.delivery === true }, // --- Only asked when the condition is true
+      { key: 'phone', label: 'Phone', type: 'phone', question: 'Your phone number?', defaultCountryCode: '229' },
+      { key: 'note', label: 'Comment', question: 'Any comment?', optional: true } // --- Contact can type "skip"
    ]
 })
 
-const result = await form.ask(jid, { intro: '👋 Bonjour ! Quelques questions pour votre commande.' })
+const result = await form.ask(jid, { intro: '👋 Hello! A few questions about your order.' })
 
 if (result.status === 'completed') {
-   console.log(result.answers) // { nom: 'Boda', produit: 'gateau', quantite: 4, livraison: true, adresse: { latitude, longitude }, ... }
-   console.log(result.labels)  // { produit: '🎂 Gâteau', livraison: '✅ Oui' }
+   console.log(result.answers) // { name: 'Boda', product: 'cake', quantity: 4, delivery: true, address: { latitude, longitude }, ... }
+   console.log(result.labels)  // { product: '🎂 Cake', delivery: '✅ Yes' }
 }
 // --- Other statuses: 'cancelled' | 'timeout' | 'replaced' (a new form was started) | 'closed' (connection closed)
 
@@ -1102,13 +1102,28 @@ sock.ev.on('messages.upsert', ({ messages }) => {
 | `number` | number (`min`, `max`, `integer`) | `number` |
 | `phone` | phone number (`defaultCountryCode`) | digits, e.g. `'2290197000000'` |
 | `email` | email | `string` (lowercase) |
-| `date` | `JJ/MM/AAAA` or `AAAA-MM-JJ` (`future`, `past`) | `Date` |
+| `date` | `DD/MM/YYYY` or `YYYY-MM-DD` (`future`, `past`) | `Date` |
 | `choice` | button, list row, option text or its number | option `id` |
-| `yesno` | Yes / No button, or "oui" / "non" | `boolean` |
+| `yesno` | Yes / No button, or "yes" / "no" | `boolean` |
 | `location` | location, or typed address (`allowText`) | `{ latitude, longitude }` or `{ address }` |
 | `image` `video` `audio` `document` `media` | file (`mimetypes`) | `{ type, mimetype, caption, fileName, message }` — download it with `downloadMediaMessage(value.message, 'buffer')` |
 
-Every field also accepts `optional`, `when(answers)`, `validate(value, answers)` (return `true`, or an error message to send back), `error` and `label`. The contact can type **annuler** (cancel), **retour** (previous question) or **passer** (skip an optional field). You can change these words with `keywords` and the messages with `texts`. Also available: `form.cancel(jid, notify)`, `form.isActive(jid)`, `sock.cancelForm(jid)` and `sock.getActiveForms()`.
+Every field also accepts `optional`, `when(answers)`, `validate(value, answers)` (return `true`, or an error message to send back), `error` and `label`. The contact can type **cancel** (stop the form), **back** (previous question) or **skip** (leave an optional field empty). Also available: `form.cancel(jid, notify)`, `form.isActive(jid)`, `sock.cancelForm(jid)` and `sock.getActiveForms()`.
+
+Every message sent to the contact and every keyword can be replaced, for example to translate the form into your customers' language:
+
+```javascript
+const form = sock.createForm({
+   fields: [/* ... */],
+   keywords: { cancel: ['cancel', 'quit'], back: ['back', 'previous'], skip: ['skip', 'next'] },
+   texts: {
+      hint: '_Type "quit" to stop or "previous" to go back._',
+      confirm: '✅ Place order',
+      completed: '🎉 Your order is confirmed!',
+      step: (index, total, question) => `(${index}/${total}) ${question}`
+   }
+})
+```
 
 > [!NOTE]
 > Replies often come from the contact's LID (`xxx@lid`) rather than their phone number. The form resolves both, so pass whichever JID you have. Sessions live in memory and are lost when the process restarts.

@@ -78,8 +78,8 @@ test('sent media has no hidden "view channel" annotation', async () => {
 
 test('legacy buttons + viewOnce are wrapped in viewOnceMessage', async () => {
     const msg = await lib.generateWAMessageContent({
-        text: 'Bonjour', footer: 'pied',
-        buttons: [{ buttonId: '1', buttonText: { displayText: 'Oui' }, type: 1 }],
+        text: 'Hello', footer: 'footer',
+        buttons: [{ buttonId: '1', buttonText: { displayText: 'Yes' }, type: 1 }],
         viewOnce: true
     }, { upload: async () => ({}) })
     assert.ok(msg.viewOnceMessage?.message?.buttonsMessage, JSON.stringify(Object.keys(msg)))

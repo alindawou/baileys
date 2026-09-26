@@ -49,13 +49,13 @@ test('parseFormFieldReply: built-in validations', () => {
    assert.equal(p({ type: 'date' }, '25/12/2030').value.getMonth(), 11)
    assert.ok(p({ type: 'date' }, '31/02/2030').error)
    assert.ok(p({ type: 'date', future: true }, '01/01/2000').error)
-   const choice = { type: 'choice', options: [{ id: 'g', text: '🎂 Gâteau' }, 'Tarte'] }
+   const choice = { type: 'choice', options: [{ id: 'g', text: '🎂 Cake' }, 'Pie'] }
    assert.equal(p(choice, 'g', 'g').value, 'g')
-   assert.equal(p(choice, '2').value, 'Tarte')
-   assert.equal(p(choice, 'tarte').value, 'Tarte')
-   assert.equal(p(choice, '🎂 gâteau').label, '🎂 Gâteau')
+   assert.equal(p(choice, '2').value, 'Pie')
+   assert.equal(p(choice, 'pie').value, 'Pie')
+   assert.equal(p(choice, '🎂 cake').label, '🎂 Cake')
    assert.ok(p(choice, 'pizza').error)
-   assert.equal(p({ type: 'yesno' }, 'oui').value, true)
+   assert.equal(p({ type: 'yesno' }, 'yes').value, true)
    assert.equal(p({ type: 'yesno' }, 'no', 'no').value, false)
    assert.ok(p({ type: 'text', min: 3 }, 'ab').error)
 })
@@ -66,26 +66,26 @@ test('extractFormReply: buttons, list, native flow, location, media, viewOnce', 
    assert.equal(extractFormReply({ message: { interactiveResponseMessage: { nativeFlowResponseMessage: { paramsJson: '{"id":"c"}' } } } }).id, 'c')
    assert.equal(extractFormReply({ message: { locationMessage: { degreesLatitude: 6.4, degreesLongitude: 2.3 } } }).location.latitude, 6.4)
    assert.equal(extractFormReply({ message: { imageMessage: { mimetype: 'image/jpeg' } } }).media.type, 'image')
-   assert.equal(extractFormReply({ message: { ephemeralMessage: { message: { conversation: ' salut ' } } } }).text, 'salut')
+   assert.equal(extractFormReply({ message: { ephemeralMessage: { message: { conversation: ' hello ' } } } }).text, 'hello')
    assert.equal(extractFormReply({ message: { reactionMessage: {} } }), undefined)
 })
 
 test('full form: errors, back, list, location, confirmation (replies from LID)', async () => {
    const sock = fakeSock()
    const form = sock.createForm({
-      title: 'Commande', typing: false,
+      title: 'Order', typing: false,
       fields: [
-         { key: 'nom', label: 'Nom', question: 'Votre nom ?', min: 3 },
-         { key: 'produit', label: 'Produit', type: 'choice', question: 'Produit ?', options: [{ id: 'gateau', text: '🎂 Gâteau' }, { id: 'tarte', text: '🥧 Tarte' }] },
-         { key: 'taille', label: 'Taille', type: 'choice', question: 'Taille ?', options: ['S', 'M', 'L', 'XL'] },
-         { key: 'quantite', label: 'Quantité', type: 'number', question: 'Combien ?', min: 1, max: 20, integer: true },
-         { key: 'adresse', label: 'Adresse', type: 'location', question: 'Adresse ?' }
+         { key: 'name', label: 'Name', question: 'Your name?', min: 3 },
+         { key: 'product', label: 'Product', type: 'choice', question: 'Product?', options: [{ id: 'cake', text: '🎂 Cake' }, { id: 'pie', text: '🥧 Pie' }] },
+         { key: 'size', label: 'Size', type: 'choice', question: 'Size?', options: ['S', 'M', 'L', 'XL'] },
+         { key: 'quantity', label: 'Quantity', type: 'number', question: 'How many?', min: 1, max: 20, integer: true },
+         { key: 'address', label: 'Address', type: 'location', question: 'Address?' }
       ]
    })
-   const done = form.ask(PN, { intro: 'Bonjour !' })
+   const done = form.ask(PN, { intro: 'Hello!' })
    await tick()
-   assert.equal(sock.sent[0].content.text, 'Bonjour !')
-   assert.match(sock.last().text, /1\/5.*Votre nom/)
+   assert.equal(sock.sent[0].content.text, 'Hello!')
+   assert.match(sock.last().text, /1\/5.*Your name/)
    assert.equal(sock.sent[0].jid, PN)
 
    const m1 = await sock.text('ab')
@@ -94,41 +94,41 @@ test('full form: errors, back, list, location, confirmation (replies from LID)',
    await sock.text('Boda')
    assert.equal(sock.last().buttons.length, 2)                 // ≤ 3 options → buttons
    assert.ok(sock.last().viewOnce)
-   await sock.button('gateau')
+   await sock.button('cake')
    assert.equal(sock.last().sections[0].rows.length, 4)        // > 3 options → list
-   await sock.text('retour')                                    // back to the product question
-   assert.match(sock.last().text, /Produit/)
-   await sock.button('tarte')
+   await sock.text('back')                                    // back to the product question
+   assert.match(sock.last().text, /Product/)
+   await sock.button('pie')
    await sock.row('M')
    await sock.text('beaucoup')
-   assert.match(sock.last().text, /nombre/)
+   assert.match(sock.last().text, /number/)
    await sock.text('4')
    await sock.reply({ locationMessage: { degreesLatitude: 6.4091765, degreesLongitude: 2.3352802 } })
    const summary = sock.last()
-   assert.match(summary.text, /Récapitulatif/)
-   assert.match(summary.text, /Produit : 🥧 Tarte/)
-   assert.match(summary.text, /Quantité : 4/)
+   assert.match(summary.text, /Summary/)
+   assert.match(summary.text, /Product: 🥧 Pie/)
+   assert.match(summary.text, /Quantity: 4/)
    assert.deepEqual(summary.buttons.map(b => b.buttonId), ['confirm', 'restart', 'cancel'])
-   await sock.text('n\'importe quoi')
+   await sock.text('whatever')
    assert.equal(sock.last().text, T.useConfirmButtons)
    await sock.button('confirm')
 
    const r = await done
    assert.equal(r.status, 'completed')
-   assert.deepEqual({ ...r.answers, adresse: undefined }, { nom: 'Boda', produit: 'tarte', taille: 'M', quantite: 4, adresse: undefined })
-   assert.equal(r.answers.adresse.latitude, 6.4091765)
-   assert.equal(r.labels.produit, '🥧 Tarte')
+   assert.deepEqual({ ...r.answers, address: undefined }, { name: 'Boda', product: 'pie', size: 'M', quantity: 4, address: undefined })
+   assert.equal(r.answers.address.latitude, 6.4091765)
+   assert.equal(r.labels.product, '🥧 Pie')
    assert.equal(sock.last().text, T.completed)
    assert.equal(form.isActive(PN), false)
 })
 
 test('cancel at any time', async () => {
    const sock = fakeSock()
-   const form = sock.createForm({ typing: false, fields: [{ key: 'a', question: 'A ?' }, { key: 'b', question: 'B ?' }] })
+   const form = sock.createForm({ typing: false, fields: [{ key: 'a', question: 'A?' }, { key: 'b', question: 'B?' }] })
    const done = form.ask(PN)
    await tick()
    await sock.text('x-ok')
-   await sock.text('Annuler')
+   await sock.text('Cancel')
    const r = await done
    assert.equal(r.status, 'cancelled')
    assert.equal(r.answers.a, 'x-ok')
@@ -140,28 +140,28 @@ test('optional field, conditional field, yes/no, no confirmation', async () => {
    const form = sock.createForm({
       typing: false, confirm: false,
       fields: [
-         { key: 'livraison', type: 'yesno', question: 'Livraison ?' },
-         { key: 'adresse', question: 'Adresse ?', when: a => a.livraison === true },
-         { key: 'note', question: 'Une remarque ?', optional: true }
+         { key: 'delivery', type: 'yesno', question: 'Delivery?' },
+         { key: 'address', question: 'Address?', when: a => a.delivery === true },
+         { key: 'note', question: 'Any comment?', optional: true }
       ]
    })
    const done = form.ask(PN)
    await tick()
    assert.match(sock.last().text, /1\/3/)
    await sock.button('no')                     // no delivery → address skipped
-   assert.match(sock.last().text, /2\/2.*remarque/s)
-   await sock.text('passer')
+   assert.match(sock.last().text, /2\/2.*comment/s)
+   await sock.text('skip')
    const r = await done
    assert.equal(r.status, 'completed')
-   assert.deepEqual(r.answers, { livraison: false, note: null })
-   assert.equal('adresse' in r.answers, false)
+   assert.deepEqual(r.answers, { delivery: false, note: null })
+   assert.equal('address' in r.answers, false)
 })
 
 test('custom validate, other contacts ignored, replies from PN', async () => {
    const sock = fakeSock()
    const form = sock.createForm({
       typing: false, confirm: false,
-      fields: [{ key: 'code', question: 'Code promo ?', validate: v => v === 'AFRIK' || '⚠️ Code inconnu.' }]
+      fields: [{ key: 'code', question: 'Promo code?', validate: v => v === 'AFRIK' || '⚠️ Unknown code.' }]
    })
    const done = form.ask(PN)
    await tick()
@@ -169,19 +169,19 @@ test('custom validate, other contacts ignored, replies from PN', async () => {
    assert.equal(sock.isFormReply(other), false)
    assert.equal(form.isActive(PN), true)
    await sock.reply({ conversation: 'test' }, PN)
-   assert.equal(sock.last().text, '⚠️ Code inconnu.')
+   assert.equal(sock.last().text, '⚠️ Unknown code.')
    await sock.reply({ conversation: 'AFRIK' }, PN)
    assert.equal((await done).answers.code, 'AFRIK')
 })
 
 test('timeout and replacing a running form', async () => {
    const sock = fakeSock()
-   const form = sock.createForm({ typing: false, timeoutMs: 60, fields: [{ key: 'a', question: 'A ?' }] })
+   const form = sock.createForm({ typing: false, timeoutMs: 60, fields: [{ key: 'a', question: 'A?' }] })
    const r1 = await form.ask(PN)
    assert.equal(r1.status, 'timeout')
    assert.equal(sock.last().text, T.timeout)
 
-   const slow = sock.createForm({ typing: false, timeoutMs: 0, fields: [{ key: 'a', question: 'A ?' }] })
+   const slow = sock.createForm({ typing: false, timeoutMs: 0, fields: [{ key: 'a', question: 'A?' }] })
    const first = slow.ask(PN)
    await tick()
    const second = slow.ask(LID)            // same contact through its LID

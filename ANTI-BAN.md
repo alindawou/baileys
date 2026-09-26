@@ -1,70 +1,70 @@
-# Guide Anti-Ban WhatsApp avec Baileys
+# WhatsApp Anti-Ban Guide for Baileys
 
-## 1. Préparer le numéro ("réchauffage")
+## 1. Prepare the number ("warm-up")
 
-Avant toute automatisation, le numéro doit avoir un historique normal.
+Before any automation, the number must have a normal history.
 
-- Utiliser le numéro manuellement pendant **minimum 2 semaines** avant d'automatiser
-- Envoyer et recevoir des messages normalement
-- Rejoindre quelques groupes réels
-- Avoir au moins **20-30 contacts** enregistrés dans le téléphone
-- Ne jamais démarrer l'automatisation sur un numéro fraîchement créé
+- Use the number manually for **at least 2 weeks** before automating it
+- Send and receive messages normally
+- Join a few real groups
+- Have at least **20-30 contacts** saved in the phone
+- Never start automating a freshly created number
 
 ---
 
-## 2. Limites d'envoi recommandées
+## 2. Recommended sending limits
 
-| Situation | Limite conseillée |
+| Situation | Recommended limit |
 |---|---|
-| Numéro nouveau (< 1 mois) | 20 messages/jour max |
-| Numéro moyen (1-6 mois) | 100-200 messages/jour |
-| Numéro ancien (> 6 mois) | 500-1000 messages/jour |
-| Broadcast vers inconnus | Éviter totalement |
-| Broadcast vers contacts | Max 50/heure |
+| New number (< 1 month) | 20 messages/day max |
+| Average number (1-6 months) | 100-200 messages/day |
+| Old number (> 6 months) | 500-1000 messages/day |
+| Broadcast to strangers | Avoid completely |
+| Broadcast to contacts | Max 50/hour |
 
 ---
 
-## 3. Délais entre les messages
+## 3. Delays between messages
 
-Ne jamais envoyer en rafale. Ajouter un délai aléatoire entre chaque message.
+Never send in bursts. Add a random delay between each message.
 
 ```js
-// Mauvais — envoi en rafale
+// Bad — sending in bursts
 for (const jid of contacts) {
-    await sock.sendMessage(jid, { text: 'Bonjour' });
+    await sock.sendMessage(jid, { text: 'Hello' });
 }
 
-// Bon — délai aléatoire entre chaque envoi
+// Good — random delay between each message
 const randomDelay = (min, max) =>
     new Promise(r => setTimeout(r, Math.random() * (max - min) + min));
 
 for (const jid of contacts) {
-    await sock.sendMessage(jid, { text: 'Bonjour' });
-    await randomDelay(3000, 8000); // entre 3 et 8 secondes
+    await sock.sendMessage(jid, { text: 'Hello' });
+    await randomDelay(3000, 8000); // between 3 and 8 seconds
 }
 ```
 
-Règles de délai selon le volume :
+Delay rules by volume:
 
-- **< 50 messages** : 3-8 secondes entre chaque
-- **50-200 messages** : 5-15 secondes entre chaque
-- **> 200 messages** : 10-30 secondes entre chaque + pause de 5 min toutes les 50
+- **< 50 messages**: 3-8 seconds between each
+- **50-200 messages**: 5-15 seconds between each
+- **> 200 messages**: 10-30 seconds between each + a 5 min pause every 50
 
 ---
 
-## 4. Varier le contenu des messages
+## 4. Vary the message content
 
-WhatsApp détecte les messages identiques répétés.
+WhatsApp detects identical repeated messages.
 
 ```js
-// Mauvais — même texte pour tout le monde
-const message = 'Bonjour, découvrez notre offre !';
+// Bad — same text for everyone
+const message = 'Hello, check out our offer!';
 
-// Bon — varier le texte
+// Good — vary the text
 const templates = [
-    'Bonjour {name}, découvrez notre offre !',
-    'Salut {name} ! Une offre pour toi.',
-    'Hey {name}, tu as vu notre dernière promo ?'
+    'Hello {name}, check out our offer!',
+    'Hi {name}! An offer for you.',
+    'Hey {name}, have you seen our latest deal?'
 ];
 
 const getMessage = (name) => {
@@ -75,16 +75,16 @@ const getMessage = (name) => {
 
 ---
 
-## 5. Envoyer uniquement vers des contacts qui ont le numéro
+## 5. Only message contacts who have your number
 
-WhatsApp distingue "message à un contact" et "message à un inconnu".
+WhatsApp distinguishes "message to a contact" from "message to a stranger".
 
 ```js
-// Vérifier si le numéro existe sur WhatsApp avant d'envoyer
+// Check that the number exists on WhatsApp before sending
 const [result] = await sock.onWhatsApp(phoneNumber);
 
 if (!result?.exists) {
-    console.log(`${phoneNumber} n'est pas sur WhatsApp, on skip`);
+    console.log(`${phoneNumber} is not on WhatsApp, skipping`);
     continue;
 }
 
@@ -93,39 +93,39 @@ await sock.sendMessage(result.jid, { text: message });
 
 ---
 
-## 6. Simuler un comportement humain
+## 6. Behave like a human
 
 ```js
-// Simuler "en train d'écrire" avant d'envoyer
+// Show "typing…" before sending
 await sock.sendPresenceUpdate('composing', jid);
 await new Promise(r => setTimeout(r, 2000 + Math.random() * 3000));
 await sock.sendPresenceUpdate('paused', jid);
 await sock.sendMessage(jid, { text: message });
 
-// Marquer les messages reçus comme lus (comportement normal)
+// Mark received messages as read (normal behavior)
 await sock.readMessages([msg.key]);
 ```
 
 ---
 
-## 7. Infrastructure réseau
+## 7. Network infrastructure
 
-| Ce qu'il faut | Ce qu'il faut éviter |
+| Do | Avoid |
 |---|---|
-| IP résidentielle (box internet normale) | IP datacenter (AWS, DigitalOcean, OVH...) |
-| IP fixe ou avec peu de changements | VPN qui tourne de datacenter |
-| Une IP par numéro | Plusieurs numéros sur la même IP |
+| Residential IP (regular home internet box) | Datacenter IP (AWS, DigitalOcean, OVH...) |
+| Static IP or one that rarely changes | VPN running through a datacenter |
+| One IP per number | Several numbers on the same IP |
 
-Si tu dois utiliser un serveur cloud, utilise un proxy résidentiel :
+If you must use a cloud server, use a residential proxy:
 - Brightdata
 - Oxylabs
 - Smartproxy
 
 ---
 
-## 8. Gérer les reconnexions proprement
+## 8. Handle reconnections properly
 
-Trop de reconnexions fréquentes = signal suspect.
+Too many frequent reconnections = suspicious signal.
 
 ```js
 sock.ev.on('connection.update', async ({ connection, lastDisconnect }) => {
@@ -134,7 +134,7 @@ sock.ev.on('connection.update', async ({ connection, lastDisconnect }) => {
         const shouldReconnect = code !== DisconnectReason.loggedOut;
 
         if (shouldReconnect) {
-            // Attendre avant de reconnecter (pas immédiatement)
+            // Wait before reconnecting (not immediately)
             await new Promise(r => setTimeout(r, 5000));
             connectToWhatsApp();
         }
@@ -144,81 +144,81 @@ sock.ev.on('connection.update', async ({ connection, lastDisconnect }) => {
 
 ---
 
-## 9. Ne jamais faire ces choses
+## 9. Never do these things
 
-- Envoyer des messages à des numéros achetés en liste (scraping)
-- Ajouter des gens dans des groupes sans leur accord
-- Changer le numéro de `version` dans `Defaults/index.js` sans vérifier qu'elle est valide
-- Faire tourner le même numéro sur plusieurs serveurs en même temps
-- Répondre automatiquement à chaque message dans la seconde
-- Envoyer plus de 1000 messages/jour même sur un vieux numéro
-- Utiliser le même message texte exact pour des centaines de destinataires
+- Send messages to purchased or scraped number lists
+- Add people to groups without their consent
+- Change the `version` in `Defaults/index.js` without checking it is valid
+- Run the same number on several servers at the same time
+- Automatically reply to every message within a second
+- Send more than 1000 messages/day, even from an old number
+- Send the exact same text to hundreds of recipients
 
 ---
 
-## 10. Gérer un ban
+## 10. Handling a ban
 
-### Ban temporaire (soft ban)
-- Le compte peut toujours recevoir des messages mais ne peut plus en envoyer
-- Durée : 24h à 7 jours
-- Solution : arrêter toute activité, attendre, reprendre doucement
+### Temporary ban (soft ban)
+- The account can still receive messages but can no longer send them
+- Duration: 24h to 7 days
+- Solution: stop all activity, wait, then resume slowly
 
-### Ban permanent
-- Code `DisconnectReason.loggedOut` (401) dans `connection.update`
-- Le numéro est définitivement désactivé sur WhatsApp
-- Seul recours : contacter le support WhatsApp (souvent inefficace)
+### Permanent ban
+- Code `DisconnectReason.loggedOut` (401) in `connection.update`
+- The number is permanently disabled on WhatsApp
+- Only option: contact WhatsApp support (often ineffective)
 
 ```js
 sock.ev.on('connection.update', ({ connection, lastDisconnect }) => {
     const code = lastDisconnect?.error?.output?.statusCode;
 
     if (code === 401) {
-        console.error('COMPTE BANNI DÉFINITIVEMENT — arrêter le bot');
+        console.error('ACCOUNT PERMANENTLY BANNED — stop the bot');
         process.exit(1);
     }
 
     if (code === 403) {
-        console.warn('COMPTE BANNI TEMPORAIREMENT — attendre 24-48h');
+        console.warn('ACCOUNT TEMPORARILY BANNED — wait 24-48h');
     }
 });
 ```
 
 ---
 
-## 11. Architecture recommandée pour plusieurs numéros
+## 11. Recommended architecture for several numbers
 
-Si tu as besoin de volume, utilise plusieurs numéros avec une queue centralisée.
+If you need volume, use several numbers with a centralized queue.
 
 ```
-Queue centralisée (Redis / SQLite)
+Centralized queue (Redis / SQLite)
         │
-        ├── Numéro A (max 200 msgs/jour)  → IP résidentielle A
-        ├── Numéro B (max 200 msgs/jour)  → IP résidentielle B
-        └── Numéro C (max 200 msgs/jour)  → IP résidentielle C
+        ├── Number A (max 200 msgs/day)  → residential IP A
+        ├── Number B (max 200 msgs/day)  → residential IP B
+        └── Number C (max 200 msgs/day)  → residential IP C
 ```
 
-Règles :
-- 1 numéro = 1 process Node.js = 1 IP
-- Rotation des numéros si l'un est banni
-- Jamais 2 numéros sur le même serveur sans proxy séparé
+Rules:
+- 1 number = 1 Node.js process = 1 IP
+- Rotate numbers if one gets banned
+- Never 2 numbers on the same server without separate proxies
 
 ---
 
-## 12. Version WhatsApp Web à maintenir à jour
+## 12. Keep the WhatsApp Web version up to date
 
-La version déclarée dans `lib/Defaults/index.js` doit rester valide.
+The version declared in `lib/Defaults/index.js` must stay valid.
 
 ```js
-const version = [2, 3000, 1040735178]; // à mettre à jour régulièrement
+const version = [2, 3000, 1043857760]; // update regularly
 ```
 
-Pour récupérer la version actuelle valide :
+To get the current valid version:
 
 ```js
 import { fetchLatestBaileysVersion } from '@alindawou/baileys';
 
 const { version, isLatest } = await fetchLatestBaileysVersion();
-console.log(`Version: ${version}, À jour: ${isLatest}`);
+console.log(`Version: ${version}, up to date: ${isLatest}`);
 ```
 
-Si la version est invalide, WhatsApp retourne `DisconnectReason.badSession`.
+If the version is invalid, WhatsApp rejects the connection during the handshake.

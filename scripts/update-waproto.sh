@@ -1,5 +1,5 @@
 #!/bin/bash
-# Met à jour le WAProto depuis WhiskeySockets/Baileys
+# Updates WAProto from WhiskeySockets/Baileys
 # Usage: bash scripts/update-waproto.sh
 
 echo "Fetching latest WAProto from WhiskeySockets/Baileys..."

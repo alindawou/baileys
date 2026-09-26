@@ -37,7 +37,7 @@ const sendTestMessages = async (sock) => {
       location: {
          degreesLatitude: 6.3703,
          degreesLongitude: 2.3912,
-         name: '📍 Cotonou, Bénin'
+         name: '📍 Cotonou, Benin'
       }
    })
    console.log('✅ 2/10 Location sent')
