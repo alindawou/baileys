@@ -65,6 +65,7 @@
    - [Interactive](#interactive)
    - [Hydrated Template](#hydrated-template)
    - [Conversational Form](#conversational-form)
+   - [Message Router (Commands & Menus)](#message-router-commands--menus)
 - [Other Message Options](#other-message-options)
    - [AI Icon](#ai-icon)
    - [Ephemeral](#ephemeral)
@@ -1126,6 +1127,61 @@ const form = sock.createForm({
 
 > [!NOTE]
 > Replies often come from the contact's LID (`xxx@lid`) rather than their phone number. The form resolves both, so pass whichever JID you have. Sessions live in memory and are lost when the process restarts.
+
+#### Message Router (Commands & Menus)
+
+Build a bot without parsing `messages.upsert` yourself: register commands, text patterns, button handlers, message type handlers and menus, and the router calls the right one. Each chat is handled in order, and messages answering a running form are left to the form.
+
+```javascript
+const bot = sock.createRouter({
+   prefix: ['', '/', '!'], // --- Optional, '' allows commands without prefix (default ['', '/', '!', '.'])
+   groups: false, // --- Optional, handle group messages (default false)
+   onError: (error, ctx) => ctx.reply('Something went wrong, please try again.') // --- Optional
+})
+
+// --- Commands: "menu", "/order 2 cakes" → ctx.command = 'order', ctx.args = ['2', 'cakes']
+bot.command(['menu', 'start'], ctx => ctx.showMenu('main'), { description: 'Show the main menu' })
+bot.command('order', ctx => ctx.reply(`Ordering: ${ctx.argText}`), { description: 'Place an order' })
+bot.command('help', ctx => ctx.reply(bot.help()))
+
+// --- Menus: up to 3 options are sent as buttons, more as a list
+bot.menu('main', {
+   text: 'Welcome to our shop!',
+   footer: 'Pastry shop',
+   numbered: true, // --- Optional, also lists "1. Products"... so the contact can answer with a number
+   options: [
+      { id: 'products', text: 'Products', menu: 'products' }, // --- Opens another menu
+      { id: 'hours', text: 'Opening hours', run: ctx => ctx.reply('Every day, 8am - 8pm') },
+      { id: 'signup', text: 'Create an account', run: async ctx => {
+         const result = await ctx.ask({ fields: [{ key: 'name', question: 'What is your name?' }] }) // --- Conversational form
+         if (result.status === 'completed') await ctx.reply(`Welcome ${result.answers.name}!`)
+      } }
+   ]
+})
+bot.menu('products', {
+   text: 'Choose a product',
+   buttonText: 'See products',
+   options: ['Cake', 'Pie', 'Cookies', { id: 'back', text: 'Back', menu: 'main' }]
+})
+
+// --- Free text, button ids and message types
+bot.hears(/^(hi|hello)\b/i, ctx => ctx.reply(`Hello ${ctx.pushName}!`))
+bot.button(/^product:(\d+)$/, ctx => ctx.reply(`Product ${ctx.match[1]}`))
+bot.on('location', ctx => ctx.reply(`Got your location: ${ctx.location.latitude}, ${ctx.location.longitude}`))
+
+// --- Middlewares run before every handler
+bot.use(async (ctx, next) => {
+   console.log(ctx.sender, ctx.text)
+   await next()
+})
+
+// --- Nothing matched
+bot.fallback(ctx => ctx.showMenu('main'))
+```
+
+The handler context (`ctx`) gives you the message (`message`, `key`, `jid`, `sender`, `isGroup`, `pushName`, `type`, `text`, `id`, `location`, `media`), the match (`command`, `args`, `argText`, `match`, `menu`, `option`) and helpers: `reply(textOrContent)`, `react(emoji)`, `typing(ms)`, `showMenu(name)`, `ask(formDefinition)` and `session`, a per-chat object you can use as memory.
+
+Handlers are tried in this order: menu options (clicked, or typed as a number or option text after a menu was shown), buttons, commands, `hears`, message types, then `fallback`. Message types are `text`, `image`, `video`, `audio`, `document`, `sticker`, `location`, `contact`, `poll` and `reaction`. Use `bot.stop()` / `bot.start()` to pause the router, `bot.sendMenu(jid, name)` to send a menu outside a handler and `bot.handle(message)` to route a message yourself.
 
 ### Other Message Options
 

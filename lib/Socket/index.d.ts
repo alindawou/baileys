@@ -1,6 +1,7 @@
 import type { ConversationForms } from "../Utils/conversation-form.js";
+import type { MessageRouters } from "../Utils/message-router.js";
 export default makeWASocket;
-declare function makeWASocket(config: any): ConversationForms & {
+declare function makeWASocket(config: any): ConversationForms & MessageRouters & {
     communityQuery: (jid: any, type: any, content: any) => Promise<any>;
     communityMetadata: (jid: any) => Promise<{
         id: any;

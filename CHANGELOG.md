@@ -1,5 +1,13 @@
 # Changelog
 
+## Unreleased
+
+### Added
+- `sock.createRouter()`: message router with commands (with or without prefix), text patterns, button handlers, message type handlers, menus (buttons or list, sub menus, typed number answers), middlewares, per-chat session and fallback.
+
+### Changed
+- Conversational form default messages and keywords are now in English, and emojis were removed from docs, logs and default texts.
+
 ## 1.0.0 — 2026-09-24
 
 First release of `@alindawou/baileys`, forked from [`@itsliaaa/baileys`](https://github.com/itsliaaa/baileys) 0.3.18 (itself based on [WhiskeySockets/Baileys](https://github.com/WhiskeySockets/Baileys)).
